@@ -1,17 +1,22 @@
 package com.seminario.livros;
 
+import java.util.List;
 import javax.ejb.Local;
 
 /**
  *
  * @author cauaq
  */
-@Local
 public interface LivroBeanLocal {
+
+    Livro localizarPorId(Long id);
+
+    void salvar(Livro livro);
+
+    Livro selectLivro(Long id);
+
+    void excluir(Livro livro);
     
-    public Livro localizarPorId(Long id);
-    public void salvar(Livro Livro);
-    public Livro SelectLivro(Long id);
-    public void Excluir(Livro livro);
-    
+    List<Livro> getListaLivros();
+
 }

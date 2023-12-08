@@ -1,17 +1,16 @@
 package com.seminario.livros;
 
+import java.util.List;
 import javax.ejb.Stateless;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
-import javax.faces.application.ResourceDependency;
+import javax.persistence.TypedQuery;
 
 /**
- *
  * @author cauaq
  */
-@ResourceDependency(name="jsf.js")
+@Named
 @Stateless
 public class LivroBean implements LivroBeanLocal {
 
@@ -20,24 +19,27 @@ public class LivroBean implements LivroBeanLocal {
 
     @Override
     public Livro localizarPorId(Long id) {
-        return em.find(Livro.class, id);  
+        return em.find(Livro.class, id);
     }
 
     @Override
     public void salvar(Livro livro) {
         em.merge(livro);
     }
-    
+
     @Override
-    public Livro SelectLivro(Long id){
-            Livro l = em.find(Livro.class, id);
-            em.close();
-            return l;
-    }
-    
-    @Override
-    public void Excluir(Livro livro){
-        em.remove(livro); 
+    public Livro selectLivro(Long id) {
+        return em.find(Livro.class, id);
     }
 
+    @Override
+    public void excluir(Livro livro) {
+        em.remove(em.merge(livro));
+    }
+    
+    @Override
+    public List<Livro> getListaLivros() {
+        TypedQuery<Livro> query = em.createQuery("SELECT l FROM Livro l", Livro.class);
+        return query.getResultList();
+    }
 }
