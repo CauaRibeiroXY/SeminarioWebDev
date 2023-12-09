@@ -105,7 +105,7 @@
             <h:inputText id="ano" value="#{livroController.novoLivro.ano}" />
 
             <h:commandButton value="Cadastrar" action="#{livroController.cadastrarLivro}" styleClass="info-button">
-                <f:ajax execute="@form" render="livrosList livroForm horaAtual" />
+                <f:ajax execute="@form" render="livrosList livroForm" />
             </h:commandButton>
         </h:panelGrid>
 
