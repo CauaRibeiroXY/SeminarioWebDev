@@ -3,41 +3,126 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-    <h:head>
-        <title>Cadastro de Livros</title>
-    </h:head>
+<h:head>
+    <title>Cadastro de Livros - Using Ajax with Jakarta Faces Technology</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 20px;
+        }
 
-    <h:body>
-        <h:form id="livroForm">
-            <!-- Parte de Cadastro -->
-            <h:panelGrid columns="2">
-                <h:outputLabel for="titulo" value="Título do Livro:" />
-                <h:inputText id="titulo" value="#{livroController.novoLivro.titulo}" />
-                <h:outputLabel for="autor" value="Autor do Livro:" />
-                <h:inputText id="autor" value="#{livroController.novoLivro.autor}" />
-                <h:outputLabel for="ano" value="Ano do Livro:" />
-                <h:inputText id="ano" value="#{livroController.novoLivro.ano}" />
-                <h:commandButton value="Cadastrar" action="#{livroController.cadastrarLivro}">
-                    <f:ajax execute="@form" render="livrosList livroForm" />
-                </h:commandButton>
-            </h:panelGrid>
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
 
-            <!-- Parte de Livros Cadastrados -->
-            <h:panelGrid id="livrosList">
-                <f:event listener="#{livroController.carregarListaLivros}" type="preRenderView" />
-                <h:dataTable value="#{livroController.listaLivros}" var="livro">
-                    <h:column>
-                        <h:outputText value="#{livro.titulo}" />
-                    </h:column>
-                    <h:column>
-                        <h:outputText value="#{livro.autor}" />
-                    </h:column>
-                    <h:column>
-                        <h:outputText value="#{livro.ano}" />
-                    </h:column>
-                </h:dataTable>
-            </h:panelGrid>
-        </h:form>
-    </h:body>
+        h:outputLabel {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        h:inputText {
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        h:commandButton {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        h:commandButton:hover {
+            background-color: #45a049;
+        }
+
+        h:dataTable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        h:column {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .remove-button {
+            background-color: #f44336;
+            color: white;
+            padding: 8px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .remove-button:hover {
+            background-color: #d32f2f;
+        }
+
+        p {
+            text-align: center;
+            color: #555;
+            font-size: 14px;
+        }
+    </style>
+</h:head>
+
+<h:body>
+    <h:form id="livroForm">
+        <h1>Cadastro de Livros - Using Ajax with Jakarta Faces Technology</h1>
+
+        <!-- Parte de Cadastro -->
+        <h:panelGrid columns="2">
+            <h:outputLabel for="titulo" value="Título do Livro:" />
+            <h:inputText id="titulo" value="#{livroController.novoLivro.titulo}" />
+
+            <h:outputLabel for="autor" value="Autor do Livro:" />
+            <h:inputText id="autor" value="#{livroController.novoLivro.autor}" />
+
+            <h:outputLabel for="ano" value="Ano do Livro:" />
+            <h:inputText id="ano" value="#{livroController.novoLivro.ano}" />
+
+            <h:commandButton value="Cadastrar" action="#{livroController.cadastrarLivro}">
+                <f:ajax execute="@form" render="livrosList livroForm" />
+            </h:commandButton>
+        </h:panelGrid>
+
+        <!-- Parte de Livros Cadastrados -->
+        <h:panelGrid id="livrosList">
+            <f:event listener="#{livroController.carregarListaLivros}" type="preRenderView" />
+            <h:dataTable value="#{livroController.listaLivros}" var="livro">
+                <h:column>
+                    <h:outputText value="#{livro.titulo}" />
+                </h:column>
+                <h:column>
+                    <h:outputText value="#{livro.autor}" />
+                </h:column>
+                <h:column>
+                    <h:outputText value="#{livro.ano}" />
+                </h:column>
+                <h:column>
+                    <h:commandButton value="Remover" styleClass="remove-button">
+                        <f:ajax execute="@this" render="livrosList livroForm" listener="#{livroController.removerLivro(livro)}" />
+                    </h:commandButton>
+                </h:column>
+            </h:dataTable>
+        </h:panelGrid>
+
+        <!-- Explicação sobre o uso do Ajax -->
+        <p>
+            Esta página demonstra o uso do Ajax com Jakarta Faces Technology. Através do Ajax,
+            é possível realizar operações assíncronas, como o cadastro e remoção de livros,
+            sem a necessidade de recarregar a página completa. Isso proporciona uma experiência
+            mais dinâmica e eficiente para o usuário.
+        </p>
+    </h:form>
+</h:body>
 
 </html>

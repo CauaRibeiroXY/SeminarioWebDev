@@ -40,7 +40,13 @@ public class LivroController {
         livroBean.salvar(novoLivro);
         novoLivro = new Livro(); // Limpar para o próximo cadastro
     }
-
+    
+    public void removerLivro(Livro livro) {
+        livroBean.excluir(livro);
+        // Recarrega a lista após a remoção para refletir as mudanças
+        listaLivros = livroBean.getListaLivros();
+    }
+    
     @PostConstruct
     public void carregarListaLivros() {
         listaLivros = livroBean.getListaLivros();
