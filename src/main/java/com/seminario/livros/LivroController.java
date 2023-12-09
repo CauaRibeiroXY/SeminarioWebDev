@@ -1,5 +1,8 @@
 package com.seminario.livros;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -14,11 +17,28 @@ public class LivroController {
 
     @Inject
     private LivroBeanLocal livroBean;
-
+    private String termoPesquisa;
     private Livro novoLivro = new Livro();
     
+   private List<Livro> listaLivrosFiltrada;
     
     private List<Livro> listaLivros;
+
+    public String getTermoPesquisa() {
+        return termoPesquisa;
+    }
+
+    public void setTermoPesquisa(String termoPesquisa) {
+        this.termoPesquisa = termoPesquisa;
+    }
+
+    public List<Livro> getListaLivrosFiltrada() {
+        return listaLivrosFiltrada;
+    }
+
+    public void setListaLivrosFiltrada(List<Livro> listaLivrosFiltrada) {
+        this.listaLivrosFiltrada = listaLivrosFiltrada;
+    }
     
 
     public Livro getNovoLivro() {
@@ -47,9 +67,23 @@ public class LivroController {
         listaLivros = livroBean.getListaLivros();
     }
     
-    @PostConstruct
+@PostConstruct
     public void carregarListaLivros() {
         listaLivros = livroBean.getListaLivros();
+
+        // Filtrar a lista de acordo com o termo de pesquisa
+        if (termoPesquisa != null && !termoPesquisa.isEmpty()) {
+            listaLivrosFiltrada = new ArrayList<>();
+            for (Livro livro : listaLivros) {
+                if (livro.getTitulo().toLowerCase().contains(termoPesquisa.toLowerCase()) ||
+                    livro.getAutor().toLowerCase().contains(termoPesquisa.toLowerCase())) {
+                    listaLivrosFiltrada.add(livro);
+                }
+            }
+        } else {
+            listaLivrosFiltrada = listaLivros; // Sem filtro, exibir todos os livros
+        }
     }
+    
     // Métodos adicionais conforme necessário
 }

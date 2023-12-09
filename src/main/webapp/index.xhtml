@@ -26,10 +26,15 @@
         h:inputText {
             padding: 5px;
             margin-bottom: 10px;
+            width: 100%;
         }
 
-        h:commandButton {
-            background-color: #4CAF50;
+        .info-section {
+            margin-top: 20px;
+        }
+
+        .info-button {
+            background-color: #007bff;
             color: white;
             padding: 10px 15px;
             border: none;
@@ -37,8 +42,8 @@
             cursor: pointer;
         }
 
-        h:commandButton:hover {
-            background-color: #45a049;
+        .info-button:hover {
+            background-color: #0056b3;
         }
 
         h:dataTable {
@@ -66,6 +71,12 @@
             background-color: #d32f2f;
         }
 
+        .hora-atual {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+        }
+
         p {
             text-align: center;
             color: #555;
@@ -89,15 +100,23 @@
             <h:outputLabel for="ano" value="Ano do Livro:" />
             <h:inputText id="ano" value="#{livroController.novoLivro.ano}" />
 
-            <h:commandButton value="Cadastrar" action="#{livroController.cadastrarLivro}">
-                <f:ajax execute="@form" render="livrosList livroForm" />
+            <h:commandButton value="Cadastrar" action="#{livroController.cadastrarLivro}" styleClass="info-button">
+                <f:ajax execute="@form" render="livrosList livroForm horaAtual" />
             </h:commandButton>
         </h:panelGrid>
+
+        <!-- Campo de Pesquisa -->
+        <h:panelGroup styleClass="info-section">
+            <h:outputLabel for="pesquisa" value="Pesquise pelo Livro ou Autor:" />
+            <h:inputText id="pesquisa" value="#{livroController.termoPesquisa}" >
+                <f:ajax event="keyup" render="livrosList" />
+            </h:inputText>
+        </h:panelGroup>
 
         <!-- Parte de Livros Cadastrados -->
         <h:panelGrid id="livrosList">
             <f:event listener="#{livroController.carregarListaLivros}" type="preRenderView" />
-            <h:dataTable value="#{livroController.listaLivros}" var="livro">
+            <h:dataTable value="#{livroController.listaLivrosFiltrada}" var="livro">
                 <h:column>
                     <h:outputText value="#{livro.titulo}" />
                 </h:column>
@@ -119,8 +138,9 @@
         <p>
             Esta página demonstra o uso do Ajax com Jakarta Faces Technology. Através do Ajax,
             é possível realizar operações assíncronas, como o cadastro e remoção de livros,
-            sem a necessidade de recarregar a página completa. Isso proporciona uma experiência
-            mais dinâmica e eficiente para o usuário.
+            sem a necessidade de recarregar a página completa. No campo de pesquisa, o Ajax é
+            utilizado para filtrar a lista de livros dinamicamente conforme o usuário digita,
+            proporcionando uma experiência de pesquisa mais interativa.
         </p>
     </h:form>
 </h:body>
